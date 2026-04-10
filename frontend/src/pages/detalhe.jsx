@@ -109,6 +109,10 @@ export default function DetalheLivro() {
           </Box>
         </>
       )}
+
+      <Box component="footer" sx={{ py: 3, textAlign: 'center' }}>
+        <Typography variant="body2">Vinicius Henrique Budag Coelho</Typography>
+      </Box>
     </Container>
   )
 }
