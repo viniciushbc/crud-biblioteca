@@ -18,6 +18,14 @@ export default function CadastroLivro() {
     quantidade: '',
     sinopse: ''
   })
+  
+  useEffect(() => {
+    if (id) {
+      fetch(`http://localhost:3000/livros/${id}`)
+        .then(res => res.json())
+        .then(data => setForm(data))
+    }
+  }, [id])
 
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -25,9 +33,15 @@ export default function CadastroLivro() {
 
   const handleSubmit = e => {
     e.preventDefault()
-    // post da api
-    console.log(form)
-    navigate('/')
+
+    const url    = id ? `http://localhost:3000/livros/${id}` : 'http://localhost:3000/livros'
+    const method = id ? 'PUT' : 'POST'
+
+    fetch(url, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(form)
+    }).then(() => navigate('/'))
   }
 
   return (

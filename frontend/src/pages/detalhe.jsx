@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import {
   Container, Typography, Button, Box
@@ -6,18 +7,13 @@ import {
 export default function DetalheLivro() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const [livro, setLivro] = useState({})
 
-  // chamar api
-  const livro = {
-    titulo: '',
-    autor: '',
-    ano: '',
-    editora: '',
-    genero: '',
-    paginas: '',
-    quantidade: '',
-    sinopse: ''
-  }
+  useEffect(() => {
+    fetch(`http://localhost:3000/livros/${id}`)
+      .then(res => res.json())
+      .then(data => setLivro(data))
+  }, [id])
 
   return (
     <Container sx={{ mt: 4 }}>

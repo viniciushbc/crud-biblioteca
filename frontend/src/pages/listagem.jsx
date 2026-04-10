@@ -7,9 +7,14 @@ import {
 
 export default function ListaLivros() {
   const [busca, setBusca] = useState('')
+  const [livros, setLivros] = useState([])
   const navigate = useNavigate()
 
-  const livros = [] // chamar api
+  useEffect(() => {
+    fetch('http://localhost:3000/livros')
+      .then(res => res.json())
+      .then(data => setLivros(data))
+  }, [])
 
   const filtrados = livros.filter(l =>
     l.titulo.toLowerCase().includes(busca.toLowerCase())
