@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import {
   Alert,
+  Box,
   Container,
   Snackbar,
   Typography,
@@ -202,6 +203,10 @@ export default function ListaLivros() {
           {mensagem}
         </Alert>
       </Snackbar>
+
+      <Box component="footer" sx={{ py: 3, textAlign: 'center' }}>
+        <Typography variant="body2">Vinicius Henrique Budag Coelho</Typography>
+      </Box>
     </Container>
   )
 }
