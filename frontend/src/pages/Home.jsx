@@ -13,7 +13,7 @@ export default function Home() {
 
       <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: 250 }}>
-          <Button variant="outlined" size="large" onClick={() => navigate('/')}>Lista de Livros</Button>
+          <Button variant="outlined" size="large" onClick={() => navigate('/listar')}>Lista de Livros</Button>
           <Button variant="outlined" size="large" onClick={() => navigate('/cadastro')}>Cadastrar Livro</Button>
         </Box>
       </Box>
