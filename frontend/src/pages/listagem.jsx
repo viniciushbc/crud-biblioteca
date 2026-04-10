@@ -52,6 +52,21 @@ export default function ListaLivros() {
     setPagina(0)
   }
 
+  const handleExcluir = id => {
+    const confirmar = window.confirm('Tem certeza que deseja excluir este livro?')
+
+    if (!confirmar) {
+      return
+    }
+
+    fetch(`http://localhost:3000/livros/${id}`, {
+      method: 'DELETE'
+    }).then(() => {
+      setLivros(prevLivros => prevLivros.filter(livro => livro.id !== id))
+      setPagina(0)
+    })
+  }
+
   return (
     <Container sx={{ mt: 4 }}>
       <Typography variant="h4">Biblioteca</Typography>
@@ -86,7 +101,7 @@ export default function ListaLivros() {
               <TableCell>
                 <Button size="small" onClick={() => navigate(`/livro/${l.id}`)}>Ver</Button>
                 <Button size="small" onClick={() => navigate(`/editar/${l.id}`)}>Editar</Button>
-                <Button size="small" color="error">Excluir</Button>
+                <Button size="small" color="error" onClick={() => handleExcluir(l.id)}>Excluir</Button>
               </TableCell>
             </TableRow>
           ))}

@@ -15,6 +15,18 @@ export default function DetalheLivro() {
       .then(data => setLivro(data))
   }, [id])
 
+  const handleExcluir = () => {
+    const confirmar = window.confirm('Tem certeza que deseja excluir este livro?')
+
+    if (!confirmar) {
+      return
+    }
+
+    fetch(`http://localhost:3000/livros/${id}`, {
+      method: 'DELETE'
+    }).then(() => navigate('/listar'))
+  }
+
   return (
     <Container sx={{ mt: 4 }}>
       <Typography variant="h5">Detalhe do Livro</Typography>
@@ -32,7 +44,7 @@ export default function DetalheLivro() {
 
       <Box sx={{ mt: 3 }}>
         <Button variant="contained" onClick={() => navigate(`/editar/${id}`)}>Editar</Button>
-        <Button sx={{ ml: 2 }} color="error">Excluir</Button>
+        <Button sx={{ ml: 2 }} color="error" onClick={handleExcluir}>Excluir</Button>
         <Button sx={{ ml: 2 }} onClick={() => navigate('/')}>Voltar</Button>
       </Box>
     </Container>
