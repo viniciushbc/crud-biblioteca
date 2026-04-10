@@ -1,13 +1,24 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
-  Container, Typography, TextField, Button,
-  Table, TableHead, TableRow, TableCell, TableBody
+  Container,
+  Typography,
+  TextField,
+  Button,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  TablePagination,
 } from '@mui/material'
 
 export default function ListaLivros() {
   const [busca, setBusca] = useState('')
   const [livros, setLivros] = useState([])
+  // Controle da paginação da tabela
+  const [pagina, setPagina] = useState(0)
+  const [linhasPorPagina, setLinhasPorPagina] = useState(5)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -20,6 +31,27 @@ export default function ListaLivros() {
     l.titulo.toLowerCase().includes(busca.toLowerCase())
   )
 
+  // Pega só os livros da página atual
+  const inicio = pagina * linhasPorPagina
+  const fim = inicio + linhasPorPagina
+  const livrosPaginados = filtrados.slice(inicio, fim)
+
+  const handleBusca = e => {
+    setBusca(e.target.value)
+    // Sempre volta pra primeira página quando fizer uma nova busca
+    setPagina(0)
+  }
+
+  const handleMudarPagina = (_, novaPagina) => {
+    setPagina(novaPagina)
+  }
+
+  const handleMudarLinhasPorPagina = e => {
+    // Muda quantos itens aparecem por vez e reinicia a paginação
+    setLinhasPorPagina(parseInt(e.target.value, 10))
+    setPagina(0)
+  }
+
   return (
     <Container sx={{ mt: 4 }}>
       <Typography variant="h4">Biblioteca</Typography>
@@ -27,7 +59,7 @@ export default function ListaLivros() {
       <TextField
         label="Buscar por nome"
         value={busca}
-        onChange={e => setBusca(e.target.value)}
+        onChange={handleBusca}
         sx={{ my: 2 }}
         fullWidth
       />
@@ -39,14 +71,14 @@ export default function ListaLivros() {
       <Table sx={{ mt: 2 }}>
         <TableHead>
           <TableRow>
-            <TableCell>Título</TableCell>
+            <TableCell>Titulo</TableCell>
             <TableCell>Autor</TableCell>
             <TableCell>Ano</TableCell>
-            <TableCell>Ações</TableCell>
+            <TableCell>Acoes</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {filtrados.map(l => (
+          {livrosPaginados.map(l => (
             <TableRow key={l.id}>
               <TableCell>{l.titulo}</TableCell>
               <TableCell>{l.autor}</TableCell>
@@ -60,6 +92,18 @@ export default function ListaLivros() {
           ))}
         </TableBody>
       </Table>
+
+      {/* Componente do Material para navegar entre as páginas da lista */}
+      <TablePagination
+        component="div"
+        count={filtrados.length}
+        page={pagina}
+        onPageChange={handleMudarPagina}
+        rowsPerPage={linhasPorPagina}
+        onRowsPerPageChange={handleMudarLinhasPorPagina}
+        rowsPerPageOptions={[5, 10, 15]}
+        labelRowsPerPage="Livros por pagina"
+      />
     </Container>
   )
 }
